@@ -71,10 +71,6 @@ class _BottomNavigatonBarExpandableScreenState extends State<BottomNavigatonBarE
   late final PageController _pageController;
   late final ValueNotifier<int>  _currentPage;
   late final ValueNotifier<bool> _buttomBarVisibility;
-  late final ThemeData _theme;
-  late final TextStyle _textStyle;
-  late final IconThemeData _iconThemeData;
-  late final double _iconButtomWidth;
 
   /// inverter a visibilidade da barra de botões
   void _invertVisibility(){
@@ -109,20 +105,21 @@ class _BottomNavigatonBarExpandableScreenState extends State<BottomNavigatonBarE
   @override
   Widget build(BuildContext context) {
     
-    _theme = Theme.of(context);
+     ThemeData theme = Theme.of(context);
     
-    _textStyle = widget.labelStyle 
-      ?? _theme.textTheme.button 
+    TextStyle textStyle = widget.labelStyle 
+      ?? theme.textTheme.button 
       ?? const TextStyle(fontSize: 14.0, color: Colors.white);
 
-    _iconThemeData = widget.iconThemeData ?? _theme.iconTheme;
+    IconThemeData iconThemeData = widget.iconThemeData ?? theme.iconTheme;
 
-    final double partOfButtomWidth = (MediaQuery.of(context).size.width / widget.listExpandableTag.length) * 0.49;
-    
+    double partOfButtomWidth = (MediaQuery.of(context).size.width / widget.listExpandableTag.length) * 0.49;
+    double iconButtomWidth;
+
     if(partOfButtomWidth <= 42){
-      _iconButtomWidth = (_iconThemeData.size ?? 24) + 42;
+      iconButtomWidth = (iconThemeData.size ?? 24) + 42;
     }else{
-      _iconButtomWidth = (_iconThemeData.size ?? 24) + partOfButtomWidth;
+      iconButtomWidth = (iconThemeData.size ?? 24) + partOfButtomWidth;
     }
 
     return Stack(
@@ -155,7 +152,7 @@ class _BottomNavigatonBarExpandableScreenState extends State<BottomNavigatonBarE
                 alignment: Alignment.center,
                 padding: const EdgeInsets.all(4.0),
                 decoration: widget.backgroundDecoration ?? BoxDecoration(
-                  color: _theme.primaryColor,
+                  color: theme.primaryColor,
                 ),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -166,27 +163,27 @@ class _BottomNavigatonBarExpandableScreenState extends State<BottomNavigatonBarE
                       return Material(
                         color: Colors.transparent,
                         child: InkWell(
-                          splashColor: widget.splashColor ?? _theme.splashColor,
-                          focusColor:  widget.focusColor ?? _theme.focusColor,
-                          hoverColor:  widget.hoverColor ?? _theme.hoverColor,
-                          highlightColor: widget.highlightColor ?? _theme.highlightColor,
+                          splashColor: widget.splashColor ?? theme.splashColor,
+                          focusColor:  widget.focusColor ?? theme.focusColor,
+                          hoverColor:  widget.hoverColor ?? theme.hoverColor,
+                          highlightColor: widget.highlightColor ?? theme.highlightColor,
                           borderRadius: BorderRadius.circular(
                             widget.selectedButtonBorderRadius ?? widget.backgroundHeight),
                           child: ValueListenableBuilder<int>(
                             valueListenable: _currentPage,
-                            builder: (_, _index, __) {
+                            builder: (_, i, __) {
                               return AnimatedContainer(
                                 alignment: Alignment.center,
                                 duration: const Duration(milliseconds: 300), //widget.animationTime,
                                 curve: Curves.fastOutSlowIn,
-                                width: _index == index 
-                                  ? (_iconThemeData.size ?? 24) + 44 + getTextWidth(
+                                width: i == index 
+                                  ? (iconThemeData.size ?? 24) + 44 + getTextWidth(
                                         widget.listExpandableTag[index].label,
-                                        style: _textStyle
+                                        style: textStyle
                                       )
-                                  : _iconButtomWidth,
+                                  : iconButtomWidth,
                                 decoration: BoxDecoration(
-                                  color: _index  == index 
+                                  color: i  == index 
                                     ? widget.selectedButtonColor ?? Colors.transparent 
                                     : Colors.transparent,
                                   borderRadius: BorderRadius.circular(
@@ -194,11 +191,11 @@ class _BottomNavigatonBarExpandableScreenState extends State<BottomNavigatonBarE
                                 ),
                                 padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
                                 child: Visibility(
-                                  visible: _index == index ? true : false,
+                                  visible: i == index ? true : false,
                                   replacement: Icon(
                                     widget.listExpandableTag[index].icon, 
-                                    color: _iconThemeData.color?.withOpacity(0.8), 
-                                    size: _iconThemeData.size,
+                                    color: iconThemeData.color?.withOpacity(0.8), 
+                                    size: iconThemeData.size,
                                   ),
                                   child: ListView(
                                     physics: const NeverScrollableScrollPhysics(),
@@ -207,8 +204,8 @@ class _BottomNavigatonBarExpandableScreenState extends State<BottomNavigatonBarE
                                     children: [
                                       Icon(
                                         widget.listExpandableTag[index].icon, 
-                                        color: _iconThemeData.color,
-                                        size: _iconThemeData.size,
+                                        color: iconThemeData.color,
+                                        size: iconThemeData.size,
                                       ),
                                       Align(
                                         alignment: Alignment.centerLeft,
@@ -216,7 +213,7 @@ class _BottomNavigatonBarExpandableScreenState extends State<BottomNavigatonBarE
                                           padding: const EdgeInsets.symmetric(horizontal: 5),
                                           child: Text(
                                             widget.listExpandableTag[index].label, 
-                                            style: _textStyle,
+                                            style: textStyle,
                                           ),
                                         ),
                                       ),
