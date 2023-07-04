@@ -7,7 +7,11 @@ class BottomNavigatonBarExpandableScreen extends StatefulWidget {
 
   final TextStyle? labelStyle;
   final IconThemeData? iconThemeData;
-  final Color selectedButtonColor;
+  final Color? selectedButtonColor;
+  final Color? splashColor;
+  final Color? focusColor;
+  final Color? hoverColor;
+  final Color? highlightColor;
   final double? selectedButtonBorderRadius;
   final double backgroundHeight, backgroundWidth;
   final BoxDecoration? backgroundDecoration;
@@ -29,7 +33,11 @@ class BottomNavigatonBarExpandableScreen extends StatefulWidget {
     required this.listExpandableTag,
     this.labelStyle,
     this.iconThemeData,
-    this.selectedButtonColor = Colors.black26,
+    this.selectedButtonColor,
+    this.splashColor,
+    this.focusColor,
+    this.hoverColor,
+    this.highlightColor,
     this.selectedButtonBorderRadius,
     this.backgroundHeight = kBottomNavigationBarHeight,
     this.backgroundWidth = double.infinity,
@@ -66,6 +74,7 @@ class _BottomNavigatonBarExpandableScreenState extends State<BottomNavigatonBarE
   late final ThemeData _theme;
   late final TextStyle _textStyle;
   late final IconThemeData _iconThemeData;
+  late final double _iconButtomWidth;
 
   /// inverter a visibilidade da barra de botões
   void _invertVisibility(){
@@ -108,6 +117,14 @@ class _BottomNavigatonBarExpandableScreenState extends State<BottomNavigatonBarE
 
     _iconThemeData = widget.iconThemeData ?? _theme.iconTheme;
 
+    final double partOfButtomWidth = (MediaQuery.of(context).size.width / widget.listExpandableTag.length) * 0.49;
+    
+    if(partOfButtomWidth <= 42){
+      _iconButtomWidth = (_iconThemeData.size ?? 24) + 42;
+    }else{
+      _iconButtomWidth = (_iconThemeData.size ?? 24) + partOfButtomWidth;
+    }
+
     return Stack(
       alignment: Alignment.bottomCenter,
       children: <Widget>[
@@ -149,10 +166,10 @@ class _BottomNavigatonBarExpandableScreenState extends State<BottomNavigatonBarE
                       return Material(
                         color: Colors.transparent,
                         child: InkWell(
-                          splashColor: _theme.splashColor,
-                          focusColor: _theme.focusColor,
-                          hoverColor: _theme.hoverColor,
-                          highlightColor: _theme.highlightColor,
+                          splashColor: widget.splashColor ?? _theme.splashColor,
+                          focusColor:  widget.focusColor ?? _theme.focusColor,
+                          hoverColor:  widget.hoverColor ?? _theme.hoverColor,
+                          highlightColor: widget.highlightColor ?? _theme.highlightColor,
                           borderRadius: BorderRadius.circular(
                             widget.selectedButtonBorderRadius ?? widget.backgroundHeight),
                           child: ValueListenableBuilder<int>(
@@ -163,14 +180,14 @@ class _BottomNavigatonBarExpandableScreenState extends State<BottomNavigatonBarE
                                 duration: const Duration(milliseconds: 300), //widget.animationTime,
                                 curve: Curves.fastOutSlowIn,
                                 width: _index == index 
-                                  ? (_iconThemeData.size ?? 24) + 18 + getTextWidth(
+                                  ? (_iconThemeData.size ?? 24) + 44 + getTextWidth(
                                         widget.listExpandableTag[index].label,
                                         style: _textStyle
                                       )
-                                  : (_iconThemeData.size ?? 24) + 30,
+                                  : _iconButtomWidth,
                                 decoration: BoxDecoration(
                                   color: _index  == index 
-                                    ? widget.selectedButtonColor 
+                                    ? widget.selectedButtonColor ?? Colors.transparent 
                                     : Colors.transparent,
                                   borderRadius: BorderRadius.circular(
                                     widget.selectedButtonBorderRadius ?? widget.backgroundHeight),

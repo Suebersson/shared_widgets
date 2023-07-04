@@ -42,18 +42,18 @@ for /f %%f in ('git config --get user.name') do set GIT_USER=%%f
 @echo.
 
 :::::::::::::::::::::::::::: upgrade repository ::::::::::::::::::::::::::::::
-@REM git add .
-@REM git commit -m %thisFolder%
-@REM git pull %BRANCH% main
-@REM git push -u %BRANCH% main
+git add .
+git commit -m %thisFolder%
+git pull %BRANCH% main
+git push -u %BRANCH% main
 
 :::::::::::::::::::::::::::: first commit in an existing repository ::::::::::::::::::::::::::::::
-git init
-git add .
-git commit -m "first commit"
-git branch -M main
-git remote add %BRANCH% %GIT_DOMAIN%%GIT_USER%/%thisFolder%.git
-git push -u %BRANCH% main
+@REM git init
+@REM git add .
+@REM git commit -m "first commit"
+@REM git branch -M main
+@REM git remote add %BRANCH% %GIT_DOMAIN%%GIT_USER%/%thisFolder%.git
+@REM git push -u %BRANCH% main
 
 @echo.
 @echo.
