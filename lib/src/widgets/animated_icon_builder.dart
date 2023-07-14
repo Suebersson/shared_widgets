@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 // Created by `Suebersson Montalvão` - 23/11/2020 
-// Upgraded 31/01/2023
+// Upgraded 14/07/2023
 
 /// Widget que usa uma [IconButton] com animação para alternar entre dois ícones
 /// semelhante ao widget [AnimatedIcon]
@@ -24,8 +24,10 @@ class AnimatedIconBuilder extends StatefulWidget {
   final Color? color,focusColor, hoverColor, highlightColor, splashColor, disabledColor;
   final MouseCursor mouseCursor;
   final FocusNode? focusNode;
-  final bool autofocus, enableFeedback;
+  final bool autofocus; 
+  final bool? enableFeedback, isSelected;
   final BoxConstraints? constraints;
+  final ButtonStyle?  style;
 
   const AnimatedIconBuilder({
     Key? key, 
@@ -38,7 +40,7 @@ class AnimatedIconBuilder extends StatefulWidget {
 
     /// propriedades para a widget [IconButton]
     this.tooltip,
-    this.iconSize = 24.0,
+    this.iconSize,
     this.visualDensity,
     this.padding = const EdgeInsets.all(8.0),
     this.alignment = Alignment.center,
@@ -52,8 +54,10 @@ class AnimatedIconBuilder extends StatefulWidget {
     this.mouseCursor = SystemMouseCursors.click,
     this.focusNode,
     this.autofocus = false,
-    this.enableFeedback = true,
+    this.enableFeedback,
+    this.isSelected,
     this.constraints,
+    this.style,
     }) : super(key: key);
 
   @override
@@ -103,23 +107,26 @@ class _AnimatedIconBuilderState extends State<AnimatedIconBuilder> with SingleTi
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     return IconButton(
       tooltip: widget.tooltip,
-      iconSize: widget.iconSize,
-      visualDensity: widget.visualDensity,
+      iconSize: widget.iconSize ?? theme.iconTheme.size,
+      visualDensity: widget.visualDensity ?? theme.iconButtonTheme.style?.visualDensity,
       padding: widget.padding,
       alignment: widget.alignment,
       splashRadius: widget.splashRadius,
-      color: widget.color,
-      focusColor: widget.focusColor,
-      hoverColor: widget.hoverColor,
-      highlightColor: widget.highlightColor,
-      splashColor: widget.splashColor,
+      color: widget.color ?? theme.iconTheme.color,
+      focusColor: widget.focusColor ?? theme.focusColor,
+      hoverColor: widget.hoverColor ?? theme.hoverColor,
+      highlightColor: widget.highlightColor ?? theme.highlightColor,
+      splashColor: widget.splashColor ?? theme.splashColor,
       disabledColor: widget.disabledColor,
       mouseCursor: widget.mouseCursor,
       focusNode: widget.focusNode,
       autofocus: widget.autofocus,
-      enableFeedback: widget.enableFeedback,
+      style: widget.style ?? theme.iconButtonTheme.style,
+      isSelected: widget.isSelected,
+      enableFeedback: widget.enableFeedback ?? theme.iconButtonTheme.style?.enableFeedback,
       constraints: widget.constraints,
 
       icon: AnimatedBuilder(
