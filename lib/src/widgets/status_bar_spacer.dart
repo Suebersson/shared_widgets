@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class SpacerPaddingTop extends StatelessWidget {
-  const SpacerPaddingTop({
+class StatusBarSpacer extends StatelessWidget {
+  const StatusBarSpacer({
     Key? key,
     this.color,
   }) : super(key: key);
