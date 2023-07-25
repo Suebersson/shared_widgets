@@ -13,3 +13,4 @@ export './src/widgets/widget_size_after_render.dart';
 /// [Functions]
 export './src/functions/get_text_width.dart';
 export './src/functions/show_drawer.dart';
+export './src/functions/resize_image.dart';
