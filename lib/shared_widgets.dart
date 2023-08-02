@@ -15,3 +15,6 @@ export './src/functions/get_text_width.dart';
 export './src/functions/show_drawer.dart';
 export './src/functions/resize_image.dart';
 export './src/functions/get_app_version.dart';
+
+/// [Overlays]
+export './src/overlays/resquest_confirmation.dart';
