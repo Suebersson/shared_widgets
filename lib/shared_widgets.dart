@@ -18,3 +18,4 @@ export './src/functions/get_app_version.dart';
 
 /// [Overlays]
 export './src/overlays/resquest_confirmation.dart';
+export './src/overlays/display_information.dart';
