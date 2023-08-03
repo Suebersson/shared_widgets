@@ -105,13 +105,15 @@ class _BottomNavigatonBarExpandableScreenState extends State<BottomNavigatonBarE
   @override
   Widget build(BuildContext context) {
     
-     ThemeData theme = Theme.of(context);
+    ThemeData theme = Theme.of(context);
     
     TextStyle textStyle = widget.labelStyle 
-      ?? theme.textTheme.button 
+      ?? theme.textTheme.bodySmall
       ?? const TextStyle(fontSize: 14.0, color: Colors.white);
 
-    IconThemeData iconThemeData = widget.iconThemeData ?? theme.iconTheme;
+    IconThemeData iconThemeData = widget.iconThemeData 
+      ?? theme.bottomNavigationBarTheme.selectedIconTheme 
+      ?? theme.iconTheme;
 
     double partOfButtomWidth = (MediaQuery.of(context).size.width / widget.listExpandableTag.length) * 0.49;
     double iconButtomWidth;
@@ -152,7 +154,7 @@ class _BottomNavigatonBarExpandableScreenState extends State<BottomNavigatonBarE
                 alignment: Alignment.center,
                 padding: const EdgeInsets.all(4.0),
                 decoration: widget.backgroundDecoration ?? BoxDecoration(
-                  color: theme.primaryColor,
+                  color: theme.bottomNavigationBarTheme.backgroundColor,
                 ),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
