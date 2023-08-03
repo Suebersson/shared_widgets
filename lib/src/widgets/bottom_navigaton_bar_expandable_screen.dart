@@ -115,7 +115,7 @@ class _BottomNavigatonBarExpandableScreenState extends State<BottomNavigatonBarE
       ?? theme.bottomNavigationBarTheme.selectedIconTheme 
       ?? theme.iconTheme;
 
-    double partOfButtomWidth = (MediaQuery.of(context).size.width / widget.listExpandableTag.length) * 0.49;
+    double partOfButtomWidth = (MediaQuery.sizeOf(context).width / widget.listExpandableTag.length) * 0.49;
     double iconButtomWidth;
 
     if(partOfButtomWidth <= 42){
