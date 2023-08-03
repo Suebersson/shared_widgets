@@ -108,7 +108,7 @@ class _BottomNavigatonBarExpandableScreenState extends State<BottomNavigatonBarE
     ThemeData theme = Theme.of(context);
     
     TextStyle textStyle = widget.labelStyle 
-      ?? theme.textTheme.bodySmall
+      ?? theme.bottomNavigationBarTheme.selectedLabelStyle
       ?? const TextStyle(fontSize: 14.0, color: Colors.white);
 
     IconThemeData iconThemeData = widget.iconThemeData 

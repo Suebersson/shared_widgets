@@ -91,7 +91,7 @@ class TextHyperLink extends StatelessWidget {
       textHeightBehavior: textHeightBehavior,
       text: TextSpan(
         // style: style ?? DefaultTextStyle.of(context).style,
-        style: style ?? Theme.of(context).textTheme.bodyText2,
+        style: style ?? Theme.of(context).textTheme.bodyMedium,
         children: newText.split(_split).map<InlineSpan>((_text) {
           if(_text.isNetworkURL) {
             return TextSpan(
