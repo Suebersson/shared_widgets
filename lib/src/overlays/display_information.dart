@@ -75,7 +75,7 @@ Future<void> displayInformation({
                 direction:  direction ?? DismissDirection.down,
                 child: Container(
                   height: height ?? 320.0,
-                  width: double.infinity,
+                  width: width ?? double.infinity,
                   alignment: Alignment.center,
                   margin: margin ?? const EdgeInsets.symmetric(vertical: 2.0, horizontal: 20.0),
                   padding: padding ?? const EdgeInsets.all(10.0),

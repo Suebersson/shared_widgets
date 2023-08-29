@@ -9,7 +9,7 @@ class StatusBarSpacer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).padding.top,
+      height: MediaQuery.paddingOf(context).top,
       width: double.infinity,
       child: ColoredBox(
         color: color ?? Theme.of(context).appBarTheme.backgroundColor ?? Colors.amber,
