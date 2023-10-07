@@ -57,6 +57,7 @@ Future<bool> requestConfirmation({
     barrierDismissible: true,
     barrierColor: barrierColor ?? Colors.black45,
     transitionDuration: transitionDuration ?? const Duration(milliseconds: 400),
+    routeSettings: const RouteSettings(name: 'requestConfirmation'),
     pageBuilder: (context, animation, animation2){
       return Material(
           color: Colors.transparent,
