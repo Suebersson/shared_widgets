@@ -46,6 +46,8 @@ Future<void> displayInformation({
   // Exibir a animação de baixo  para cima
   position ??= Tween(begin: const Offset(0, 1), end: const Offset(0, 0));
 
+  messageStyle ??= Theme.of(context).textTheme.bodySmall;
+
   return showGeneralDialog<void>(
     context: context,
     barrierLabel: barrierLabel ?? 'displayInformation',

@@ -51,6 +51,12 @@ Future<bool> requestConfirmation({
   // Exibir a animação de baixo  para cima
   position ??= Tween(begin: const Offset(0, 1), end: const Offset(0, 0));
   
+  questionStyle ??= Theme.of(context).textTheme.bodySmall;
+  
+  buttonTextStyle ??= questionStyle?.copyWith(
+    fontWeight: FontWeight.w600,
+  );
+
   return await showGeneralDialog<bool>(
     context: context,
     barrierLabel: "requestConfirmation",
