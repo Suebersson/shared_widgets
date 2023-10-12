@@ -22,10 +22,15 @@ class TriggerSwitch extends StatefulWidget {
   /// ```
   /// 
   final Size size;
-  final Color backgroundColorChecked, backgroundColorUnchecked;
-  final Color checkedColor, uncheckedColor;
+  final Color backgroundColorChecked, 
+    backgroundColorUnchecked,
+    checkedColor, 
+    uncheckedColor;
   final bool value;
   final ValueChanged<bool> onChanged;
+  /// Computar se pode alterar o stado do widget, caso o valor de retorno [true] ou essa propriedade 
+  /// seja nula a função [onChanged] será executada
+  final Future<bool> Function()? computeBefore;
   final Curve curve, reverseCurve;
   final Duration animationTime;
   final List<BoxShadow>? boxShadowList;
@@ -34,6 +39,7 @@ class TriggerSwitch extends StatefulWidget {
     Key? key,
     required this.value,
     required this.onChanged,
+    this.computeBefore,
     this.size = const Size(38.0, 18.0),
     this.backgroundColorChecked = Colors.black45,
     this.backgroundColorUnchecked = Colors.black45,
@@ -96,15 +102,21 @@ class _TriggerSwitchState extends State<TriggerSwitch> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        if(_isCompleted){
-          animationController.reverse();
-          widget.onChanged(false);
-        }else{
-          animationController.forward();
-          widget.onChanged(true);
-        }
-        _isCompleted = !_isCompleted;
+      onTap: () async{
+        Future<bool>.value(await widget.computeBefore?.call() ?? true)
+          .then((canChange) {
+            if (canChange) {
+              if(_isCompleted){
+                animationController.reverse();
+                widget.onChanged(false);
+              }else{
+                animationController.forward();
+                widget.onChanged(true);
+              }
+              _isCompleted = !_isCompleted;
+            }
+          }
+        );
       },
       child: AnimatedBuilder(
         animation: animationController,
@@ -150,4 +162,3 @@ class _TriggerSwitchState extends State<TriggerSwitch> with SingleTickerProvider
     );
   }
 }
-
