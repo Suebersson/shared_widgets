@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import '../widgets/boolean_builder.dart';
 
 /// Exibir uma mensagem de text usando a função [showGeneralDialog]
 Future<void> displayInformation({
   required String message,
   required BuildContext context,
+  ThemeData? theme,
   Widget? buttonOk,
   TextStyle? messageStyle,
   double? height,
@@ -43,10 +45,13 @@ Future<void> displayInformation({
 
   */
 
+
   // Exibir a animação de baixo  para cima
   position ??= Tween(begin: const Offset(0, 1), end: const Offset(0, 0));
 
-  messageStyle ??= Theme.of(context).textTheme.bodySmall;
+  theme ??= Theme.of(context);
+
+  messageStyle ??= theme.textTheme.bodySmall;
 
   return showGeneralDialog<void>(
     context: context,
@@ -72,50 +77,56 @@ Future<void> displayInformation({
                   ),
                 )
               ),
-              Dismissible(
-                onDismissed: (_) => Navigator.pop(context),
-                key: const Key("displayInformationDismissible"),
-                direction:  direction ?? DismissDirection.down,
-                child: Container(
-                  height: height ?? 320.0,
-                  width: width ?? double.infinity,
-                  alignment: Alignment.center,
-                  margin: margin ?? const EdgeInsets.symmetric(vertical: 2.0, horizontal: 20.0),
-                  padding: padding ?? const EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
-                    color: backgroundColor ?? Theme.of(context).dialogBackgroundColor,
-                    borderRadius: borderRadius ?? BorderRadius.circular(8.0),
-                  ),
-                  child: SingleChildScrollView(
-                    physics: backgroundPhysics ?? const NeverScrollableScrollPhysics(),
-                    scrollDirection: Axis.vertical,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          message,
-                          style: messageStyle,
-                          textAlign: TextAlign.left,
-                        ),
-                        const SizedBox(height: 20.0),
-                        Visibility(
-                          visible: buttonOk != null,
-                          replacement: FilledButton(
-                            onPressed: () => Navigator.pop(context),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'OK',
-                                style: messageStyle,
+              FittedBox(
+                fit: BoxFit.fitHeight,
+                child: LimitedBox(
+                  maxWidth: MediaQuery.sizeOf(context).width,
+                  child: Dismissible(
+                    onDismissed: (_) => Navigator.pop(context),
+                    key: const Key("displayInformationDismissible"),
+                    direction:  direction ?? DismissDirection.down,
+                    child: Container(
+                      height: height,
+                      width: width,
+                      alignment: Alignment.center,
+                      margin: margin ?? const EdgeInsets.symmetric(vertical: 2.0, horizontal: 20.0),
+                      padding: padding ?? const EdgeInsets.symmetric(horizontal: 14.0, vertical: 20.0),
+                      decoration: BoxDecoration(
+                        color: backgroundColor ?? theme?.dialogBackgroundColor,
+                        borderRadius: borderRadius ?? BorderRadius.circular(8.0),
+                      ),
+                      child: SingleChildScrollView(
+                        physics: backgroundPhysics ?? const NeverScrollableScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              message,
+                              style: messageStyle,
+                              textAlign: TextAlign.left,
+                            ),
+                            const SizedBox(height: 20.0),
+                            BooleanBuilder(
+                              test: buttonOk is Widget, 
+                              whenTrue: (_) => buttonOk ?? const SizedBox.shrink(),
+                              whenFalse: (_) => FilledButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    'OK',
+                                    style: messageStyle,
+                                  ),
+                                )
                               ),
-                            )
-                          ),
-                          child: buttonOk ?? const SizedBox.shrink(),
+                            ),
+                          ],
                         )
-                      ],
-                    )
+                      ),
+                    ),
                   ),
                 ),
               ),

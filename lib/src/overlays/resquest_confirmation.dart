@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 Future<bool> requestConfirmation({
   required String question,
   required BuildContext context,
+  ThemeData? theme,
   String labelToTrue = 'Sim',
   String labelToFalse = 'Não',
   TextStyle? questionStyle,
@@ -50,8 +51,10 @@ Future<bool> requestConfirmation({
 
   // Exibir a animação de baixo  para cima
   position ??= Tween(begin: const Offset(0, 1), end: const Offset(0, 0));
+
+  theme ??= Theme.of(context);
   
-  questionStyle ??= Theme.of(context).textTheme.bodySmall;
+  questionStyle ??= theme.textTheme.bodySmall;
   
   buttonTextStyle ??= questionStyle?.copyWith(
     fontWeight: FontWeight.w600,
@@ -81,63 +84,69 @@ Future<bool> requestConfirmation({
                     ),
                   )
                 ),
-                Dismissible(
-                  onDismissed: (_) => Navigator.pop(context, false),
-                  key: const Key("requestConfirmationDialog"),
-                  direction:  direction ?? DismissDirection.down,
-                  child: Container(
-                    height: height ?? 120.0,
-                    width: width ?? double.infinity,
-                    alignment: Alignment.center,
-                    margin: margin ?? const EdgeInsets.symmetric(vertical: 2.0, horizontal: 20.0),
-                    padding: padding ?? const EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                      color: backgroundColor ?? Theme.of(context).dialogBackgroundColor,
-                      borderRadius: borderRadius ?? BorderRadius.circular(8.0),
-                    ),
-                    child: SingleChildScrollView(
-                      physics: const NeverScrollableScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: Text(
-                              question,
-                              style: questionStyle,
-                            ),
-                          ),
-                          Row(
+                FittedBox(
+                  fit: BoxFit.fitHeight,
+                  child: LimitedBox(
+                    maxWidth: MediaQuery.sizeOf(context).width,
+                    child: Dismissible(
+                      onDismissed: (_) => Navigator.pop(context, false),
+                      key: const Key("requestConfirmationDialog"),
+                      direction:  direction ?? DismissDirection.down,
+                      child: Container(
+                        height: height,
+                        width: width,
+                        alignment: Alignment.center,
+                        margin: margin ?? const EdgeInsets.symmetric(vertical: 2.0, horizontal: 20.0),
+                        padding: padding ?? const EdgeInsets.symmetric(horizontal: 14.0, vertical: 20.0),
+                        decoration: BoxDecoration(
+                          color: backgroundColor ?? theme?.dialogBackgroundColor,
+                          borderRadius: borderRadius ?? BorderRadius.circular(8.0),
+                        ),
+                        child: SingleChildScrollView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context, true), 
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    labelToTrue,
-                                    style: buttonTextStyle,
-                                  ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                child: Text(
+                                  question,
+                                  style: questionStyle,
                                 ),
                               ),
-                              TextButton(
-                                onPressed: () => Navigator.pop(context, false),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    labelToFalse,
-                                    style: buttonTextStyle,
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context, true), 
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        labelToTrue,
+                                        style: buttonTextStyle,
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context, false),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        labelToFalse,
+                                        style: buttonTextStyle,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ),
