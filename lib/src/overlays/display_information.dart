@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import '../widgets/boolean_builder.dart';
+import '../widgets/barrier_builder.dart';
 
 /// Exibir uma mensagem de text usando a função [showGeneralDialog]
 Future<void> displayInformation({
@@ -67,16 +69,7 @@ Future<void> displayInformation({
           child: Stack(
             alignment: Alignment.center,
             children: [
-              GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: const ColoredBox(
-                  color: Colors.transparent,
-                  child: SizedBox(
-                    height: double.infinity,
-                    width: double.infinity,
-                  ),
-                )
-              ),
+              const BarrierBilder(),
               FittedBox(
                 fit: BoxFit.fitHeight,
                 child: LimitedBox(

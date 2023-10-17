@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/barrier_builder.dart';
+
 /// Solicitar confirmação para uma ação do usuário
 Future<bool> requestConfirmation({
   required String question,
@@ -74,16 +76,7 @@ Future<bool> requestConfirmation({
             child: Stack(
               alignment: alignment ?? Alignment.center,
               children: [
-                GestureDetector(
-                  onTap: () => Navigator.pop(context, false),
-                  child: const ColoredBox(
-                    color: Colors.transparent,
-                    child: SizedBox(
-                      height: double.infinity,
-                      width: double.infinity,
-                    ),
-                  )
-                ),
+                const BarrierBilder(popResult: false),
                 FittedBox(
                   fit: BoxFit.fitHeight,
                   child: LimitedBox(

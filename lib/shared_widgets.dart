@@ -10,6 +10,7 @@ export './src/widgets/trigger_switch.dart';
 export './src/widgets/status_bar_spacer.dart';
 export './src/widgets/widget_size_after_render.dart';
 export './src/widgets/boolean_builder.dart';
+export './src/widgets/barrier_builder.dart';
 
 /// [Functions]
 export './src/functions/get_text_width.dart';
