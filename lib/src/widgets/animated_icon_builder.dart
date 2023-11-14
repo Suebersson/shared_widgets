@@ -13,9 +13,9 @@ class AnimatedIconBuilder extends StatefulWidget {
   final Icon icon, trasitionIcon;
   // final GestureTapCallback onPressed;
   final void Function(bool) onPressed;
+  final void Function(bool Function())? afterRender;
   final Duration transitionTime;
   final Curve curve, reverseCurve;
-
   final String? tooltip;
   final double? iconSize, splashRadius;
   final VisualDensity? visualDensity;
@@ -33,11 +33,11 @@ class AnimatedIconBuilder extends StatefulWidget {
     Key? key, 
     required this.icon, 
     required this.trasitionIcon, 
-    required this.onPressed, 
+    required this.onPressed,
+    this.afterRender,
     this.transitionTime = const Duration(milliseconds: 400), 
     this.curve = Curves.ease,
     this.reverseCurve = Curves.ease,
-
     /// propriedades para a widget [IconButton]
     this.tooltip,
     this.iconSize,
@@ -92,6 +92,10 @@ class _AnimatedIconBuilderState extends State<AnimatedIconBuilder> with SingleTi
         reverseCurve: widget.reverseCurve,
       )
     );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async{
+      widget.afterRender?.call(trigger);
+    });
   }
   
   @override
@@ -103,6 +107,15 @@ class _AnimatedIconBuilderState extends State<AnimatedIconBuilder> with SingleTi
       _animationController.dispose();
     }
     super.dispose();
+  }
+
+  bool trigger(){
+    if(_isCompleted){
+      _animationController.reverse();
+    }else{
+      _animationController.forward();
+    }
+    return _isCompleted = !_isCompleted;
   }
 
   @override
@@ -128,7 +141,6 @@ class _AnimatedIconBuilderState extends State<AnimatedIconBuilder> with SingleTi
       isSelected: widget.isSelected,
       enableFeedback: widget.enableFeedback ?? theme.iconButtonTheme.style?.enableFeedback,
       constraints: widget.constraints,
-
       icon: AnimatedBuilder(
         animation: _animationController,
         builder: (_, __) {
@@ -152,21 +164,9 @@ class _AnimatedIconBuilderState extends State<AnimatedIconBuilder> with SingleTi
           );
         },
       ),
-
       onPressed: () {
-
-        if(_isCompleted){
-          _animationController.reverse();
-        }else{
-          _animationController.forward();
-        }
-
-        _isCompleted = !_isCompleted;
-        
-        widget.onPressed(_isCompleted);
-      
+        widget.onPressed(trigger());
       },
-
     );
   }
 }
