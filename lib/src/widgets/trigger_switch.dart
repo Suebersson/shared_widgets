@@ -45,7 +45,7 @@ class TriggerSwitch extends StatefulWidget {
     this.backgroundColorUnchecked = Colors.black45,
     this.checkedColor = Colors.greenAccent,
     this.uncheckedColor = Colors.red,
-    this.curve = Curves.bounceIn,
+    this.curve = Curves.bounceInOut, //Curves.bounceIn,
     this.reverseCurve = Curves.bounceInOut,
     this.animationTime = const Duration(milliseconds: 450),
     this.boxShadowList,
