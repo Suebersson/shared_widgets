@@ -105,13 +105,19 @@ Future<void> displayInformation({
                             BooleanBuilder(
                               test: buttonOk is Widget, 
                               whenTrue: (_) => buttonOk ?? const SizedBox.shrink(),
-                              whenFalse: (_) => FilledButton(
+                              whenFalse: (_) => ActionChip(
+                                tooltip: 'OK',
+                                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                label: Text('OK', style: messageStyle,),
                                 onPressed: () => Navigator.pop(context),
-                                style: theme?.filledButtonTheme.style?.copyWith(
-                                  padding: const MaterialStatePropertyAll(EdgeInsets.all(4.0))
-                                ),
-                                child: Text('OK', style: messageStyle,),
                               ),
+                              // whenFalse: (_) => FilledButton(
+                              //   onPressed: () => Navigator.pop(context),
+                              //   style: theme?.filledButtonTheme.style?.copyWith(
+                              //     padding: const MaterialStatePropertyAll(EdgeInsets.all(4.0))
+                              //   ),
+                              //   child: Text('OK', style: messageStyle,),
+                              // ),
                             ),
                           ],
                         )
