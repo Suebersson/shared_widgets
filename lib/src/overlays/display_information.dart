@@ -107,13 +107,10 @@ Future<void> displayInformation({
                               whenTrue: (_) => buttonOk ?? const SizedBox.shrink(),
                               whenFalse: (_) => FilledButton(
                                 onPressed: () => Navigator.pop(context),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    'OK',
-                                    style: messageStyle,
-                                  ),
-                                )
+                                style: theme?.filledButtonTheme.style?.copyWith(
+                                  padding: const MaterialStatePropertyAll(EdgeInsets.all(4.0))
+                                ),
+                                child: Text('OK', style: messageStyle,),
                               ),
                             ),
                           ],
