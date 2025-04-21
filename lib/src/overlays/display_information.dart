@@ -85,7 +85,7 @@ Future<void> displayInformation({
                       margin: margin ?? const EdgeInsets.symmetric(vertical: 2.0, horizontal: 20.0),
                       padding: padding ?? const EdgeInsets.symmetric(horizontal: 14.0, vertical: 20.0),
                       decoration: BoxDecoration(
-                        color: backgroundColor ?? theme?.dialogBackgroundColor,
+                        color: backgroundColor ?? theme?.dialogTheme.backgroundColor,
                         borderRadius: borderRadius ?? BorderRadius.circular(8.0),
                       ),
                       child: SingleChildScrollView(
