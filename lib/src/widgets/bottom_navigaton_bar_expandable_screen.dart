@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../functions/get_text_width.dart';
+import './boolean_builder.dart';
 
 /// Barra de navigação inferior com botões expansível para páginas/screen
 @immutable
@@ -55,7 +56,7 @@ class BottomNavigatonBarExpandableScreen extends StatefulWidget {
   static final List<Function> _buttomBarVisibilityList = [];
 
   /// inverter a visibilidade da barra de botões
-  static void buttomBarVisibility(){
+  static void buttomBarVisibility() {
     if (_buttomBarVisibilityList.isNotEmpty) {
       _buttomBarVisibilityList.last.call();
     }
@@ -73,7 +74,7 @@ class _BottomNavigatonBarExpandableScreenState extends State<BottomNavigatonBarE
   late final ValueNotifier<bool> _buttomBarVisibility;
 
   /// inverter a visibilidade da barra de botões
-  void _invertVisibility(){
+  void _invertVisibility() {
     _buttomBarVisibility.value = !_buttomBarVisibility.value;
   }
 
@@ -86,9 +87,7 @@ class _BottomNavigatonBarExpandableScreenState extends State<BottomNavigatonBarE
     /*_pageController.addListener(() {
       print('ScrollPosition is: ${_pageController.page}');
     });*/
-    BottomNavigatonBarExpandableScreen
-      ._buttomBarVisibilityList
-        .add(_invertVisibility);
+    BottomNavigatonBarExpandableScreen._buttomBarVisibilityList.add(_invertVisibility);
   }
 
   @override
@@ -96,29 +95,27 @@ class _BottomNavigatonBarExpandableScreenState extends State<BottomNavigatonBarE
     _pageController.dispose();
     _currentPage.dispose();
     _buttomBarVisibility.dispose();
-    BottomNavigatonBarExpandableScreen
-      ._buttomBarVisibilityList
-        .removeLast();
+    BottomNavigatonBarExpandableScreen._buttomBarVisibilityList.removeLast();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     
-    ThemeData theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
     
-    TextStyle textStyle = widget.labelStyle 
+    final TextStyle textStyle = widget.labelStyle 
       ?? theme.bottomNavigationBarTheme.selectedLabelStyle
       ?? const TextStyle(fontSize: 14.0, color: Colors.white);
 
-    IconThemeData iconThemeData = widget.iconThemeData 
+    final IconThemeData iconThemeData = widget.iconThemeData 
       ?? theme.bottomNavigationBarTheme.selectedIconTheme 
       ?? theme.iconTheme;
 
-    double partOfButtomWidth = (MediaQuery.sizeOf(context).width / widget.listExpandableTag.length) * 0.49;
+    final double partOfButtomWidth = (MediaQuery.sizeOf(context).width / widget.listExpandableTag.length) * 0.49;
     double iconButtomWidth;
 
-    if(partOfButtomWidth <= 42){
+    if(partOfButtomWidth <= 42) {
       iconButtomWidth = (iconThemeData.size ?? 24) + 42;
     }else{
       iconButtomWidth = (iconThemeData.size ?? 24) + partOfButtomWidth;
@@ -145,105 +142,107 @@ class _BottomNavigatonBarExpandableScreenState extends State<BottomNavigatonBarE
         ValueListenableBuilder<bool>(
           valueListenable: _buttomBarVisibility,
           builder: (_, visible, __) {
-            return Visibility(
-              visible: visible,
-              replacement: const SizedBox.shrink(),
-              child: Container(
-                height: widget.backgroundHeight,
-                width: widget.backgroundWidth,
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(4.0),
-                decoration: widget.backgroundDecoration ?? BoxDecoration(
-                  color: theme.bottomNavigationBarTheme.backgroundColor,
-                ),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  physics: const BouncingScrollPhysics(),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: List.generate(widget.listExpandableTag.length, (index) {
-                      return Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          splashColor: widget.splashColor ?? theme.splashColor,
-                          focusColor:  widget.focusColor ?? theme.focusColor,
-                          hoverColor:  widget.hoverColor ?? theme.hoverColor,
-                          highlightColor: widget.highlightColor ?? theme.highlightColor,
-                          borderRadius: BorderRadius.circular(
-                            widget.selectedButtonBorderRadius ?? widget.backgroundHeight),
-                          child: ValueListenableBuilder<int>(
-                            valueListenable: _currentPage,
-                            builder: (_, i, __) {
-                              return AnimatedContainer(
-                                alignment: Alignment.center,
-                                duration: const Duration(milliseconds: 300), //widget.animationTime,
-                                curve: Curves.fastOutSlowIn,
-                                width: i == index 
-                                  ? (iconThemeData.size ?? 24) + 44 + getTextWidth(
-                                        widget.listExpandableTag[index].label,
-                                        style: textStyle
-                                      )
-                                  : iconButtomWidth,
-                                decoration: BoxDecoration(
-                                  color: i  == index 
-                                    ? widget.selectedButtonColor ?? Colors.transparent 
-                                    : Colors.transparent,
-                                  borderRadius: BorderRadius.circular(
-                                    widget.selectedButtonBorderRadius ?? widget.backgroundHeight),
-                                ),
-                                padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
-                                child: Visibility(
-                                  visible: i == index ? true : false,
-                                  replacement: Icon(
-                                    widget.listExpandableTag[index].icon, 
-                                    color: iconThemeData.color?.withOpacity(0.8), 
-                                    size: iconThemeData.size,
+            return BooleanBuilder(
+              test: visible,
+              whenFalse: (_) => const SizedBox.shrink(),
+              whenTrue: (_) => SafeArea(
+                child: Container(
+                  height: widget.backgroundHeight,
+                  width: widget.backgroundWidth,
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.all(4.0),
+                  decoration: widget.backgroundDecoration ?? BoxDecoration(
+                    color: theme.bottomNavigationBarTheme.backgroundColor,
+                  ),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    physics: const BouncingScrollPhysics(),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: List.generate(widget.listExpandableTag.length, (index) {
+                        return Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            splashColor: widget.splashColor ?? theme.splashColor,
+                            focusColor:  widget.focusColor ?? theme.focusColor,
+                            hoverColor:  widget.hoverColor ?? theme.hoverColor,
+                            highlightColor: widget.highlightColor ?? theme.highlightColor,
+                            borderRadius: BorderRadius.circular(
+                              widget.selectedButtonBorderRadius ?? widget.backgroundHeight),
+                            child: ValueListenableBuilder<int>(
+                              valueListenable: _currentPage,
+                              builder: (_, i, __) {
+                                return AnimatedContainer(
+                                  alignment: Alignment.center,
+                                  duration: const Duration(milliseconds: 300), //widget.animationTime,
+                                  curve: Curves.fastOutSlowIn,
+                                  width: i == index 
+                                    ? (iconThemeData.size ?? 24) + 44 + getTextWidth(
+                                          widget.listExpandableTag[index].label,
+                                          style: textStyle
+                                        )
+                                    : iconButtomWidth,
+                                  decoration: BoxDecoration(
+                                    color: i  == index 
+                                      ? widget.selectedButtonColor ?? Colors.transparent 
+                                      : Colors.transparent,
+                                    borderRadius: BorderRadius.circular(
+                                      widget.selectedButtonBorderRadius ?? widget.backgroundHeight),
                                   ),
-                                  child: ListView(
-                                    physics: const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    children: [
-                                      Icon(
-                                        widget.listExpandableTag[index].icon, 
-                                        color: iconThemeData.color,
-                                        size: iconThemeData.size,
-                                      ),
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                                          child: Text(
-                                            widget.listExpandableTag[index].label, 
-                                            style: textStyle,
+                                  padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
+                                  child: BooleanBuilder(
+                                    test: i == index ? true : false,
+                                    whenFalse: (_) => Icon(
+                                      widget.listExpandableTag[index].icon, 
+                                      color: iconThemeData.color?.withValues(alpha: 0.8), 
+                                      size: iconThemeData.size,
+                                    ),
+                                    whenTrue: (_) => ListView(
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
+                                      children: [
+                                        Icon(
+                                          widget.listExpandableTag[index].icon, 
+                                          color: iconThemeData.color,
+                                          size: iconThemeData.size,
+                                        ),
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                                            child: Text(
+                                              widget.listExpandableTag[index].label, 
+                                              style: textStyle,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              );
-                            }
+                                );
+                              }
+                            ),
+                            onTap: (){
+                              if(_currentPage.value != index){
+                                /// Transição sem animação e sem carregar páginas intermediárias
+                                _pageController.jumpToPage(index);
+                
+                                /// Transição com animação, mais pode carregar alguma página intermediária
+                                /// 
+                                /// Ex: Se a página atual for a 0 e clicar para ir para página 4, significa que
+                                /// as páginas 2 e 3 serão carregadas desnecessariamente
+                                // _pageController.animateToPage(
+                                //   index, 
+                                //   duration: widget.animationTime, 
+                                //   curve: widget.animationCurve
+                                // );
+                              }
+                            },
                           ),
-                          onTap: (){
-                            if(_currentPage.value != index){
-                              /// Transição sem animação e sem carregar páginas intermediárias
-                              _pageController.jumpToPage(index);
-
-                              /// Transição com animação, mais pode carregar alguma página intermediária
-                              /// 
-                              /// Ex: Se a página atual for a 0 e clicar para ir para página 4, significa que
-                              /// as páginas 2 e 3 serão carregadas desnecessariamente
-                              // _pageController.animateToPage(
-                              //   index, 
-                              //   duration: widget.animationTime, 
-                              //   curve: widget.animationCurve
-                              // );
-                            }
-                          },
-                        ),
-                      );
-                    }),
+                        );
+                      }),
+                    ),
                   ),
                 ),
               ),
