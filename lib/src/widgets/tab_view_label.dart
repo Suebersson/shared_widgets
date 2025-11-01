@@ -12,7 +12,6 @@ enum PositionTabLabel {top, bottom}
 //definir se as labels da tab serão fixas na largura da tela ou uma lisView na horizontal
 enum TypeLabel {fixedLabel, listLabel}
 
-@immutable
 class TabViewLabel extends StatefulWidget {
   final PositionTabLabel positionTabLabel;
   final TypeLabel typeLabel;

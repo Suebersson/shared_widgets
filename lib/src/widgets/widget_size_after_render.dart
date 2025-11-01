@@ -7,14 +7,12 @@ import 'package:flutter/widgets.dart';
 /// Obter a o tamanho de uma [Widget] após a renderizeção
 class WidgetSizeAfterRender extends StatefulWidget {
   const WidgetSizeAfterRender({
-    Key? key,
+    super.key,
     required this.child,
     required this.afterRendering
-  }) : super(key: key);
-
+  });
   final Widget child;
   final Function(Size) afterRendering;
-
   @override
   State<WidgetSizeAfterRender> createState() => _WidgetSizeAfterRenderState();
 }

@@ -5,12 +5,11 @@ import 'package:dart_dev_utils/dart_dev_utils.dart';
 enum HyperLinkType{url, email, phone}
 
 // Creted by `Suebersson Montalvão` - 08/10/2020
-// Upgraded: 30/01/2023
+// Upgraded: 26/10/2025
 
 /// Criar uma [Widget] usando a widget [RichText] semelhante a uma [Text], 
 /// que detecta `URLs`, `Emails` e `Phones` dentro do texto e criar um 
 /// hyperLink nos endereços encontrados
-@immutable
 class TextHyperLink extends StatelessWidget {
 
   final String text;
@@ -22,7 +21,7 @@ class TextHyperLink extends StatelessWidget {
   final TextDirection? textDirection;
   final bool softWrap;
   final TextOverflow overflow;
-  final double textScaleFactor;
+  final TextScaler textScale;
   final int? maxLines;
   final Locale? locale;
   final StrutStyle? strutStyle;
@@ -30,7 +29,7 @@ class TextHyperLink extends StatelessWidget {
   final TextHeightBehavior? textHeightBehavior;
 
   const TextHyperLink({
-    Key? key,
+    super.key,
     required this.text,
     required this.onClicked,
     this.style,
@@ -42,13 +41,13 @@ class TextHyperLink extends StatelessWidget {
     this.textDirection,
     this.softWrap = true,
     this.overflow = TextOverflow.clip,
-    this.textScaleFactor = 1.0,
+    this.textScale = const TextScaler.linear(1.0),
     this.maxLines,
     this.locale,
     this.strutStyle,
     this.textWidthBasis = TextWidthBasis.parent,
     this.textHeightBehavior,
-  }) : super(key: key);
+  });
 
   final String _split = '!##!';
 
@@ -83,7 +82,7 @@ class TextHyperLink extends StatelessWidget {
       textDirection: textDirection,
       softWrap: softWrap,
       overflow: overflow,
-      textScaleFactor: textScaleFactor,
+      textScaler: textScale,
       maxLines: maxLines,
       locale: locale,
       strutStyle: strutStyle,
@@ -92,30 +91,30 @@ class TextHyperLink extends StatelessWidget {
       text: TextSpan(
         // style: style ?? DefaultTextStyle.of(context).style,
         style: style ?? Theme.of(context).textTheme.bodyMedium,
-        children: newText.split(_split).map<InlineSpan>((_text) {
-          if(_text.isNetworkURL) {
+        children: newText.split(_split).map<InlineSpan>((t) {
+          if(t.isNetworkURL) {
             return TextSpan(
-              text: _text,
+              text: t,
               style: hyperLinkStyle,
               recognizer: TapGestureRecognizer()..onTap = 
-                () => onClicked(_text, HyperLinkType.url),
+                () => onClicked(t, HyperLinkType.url),
             );
-          } else if(_text.isEmail) {
+          } else if(t.isEmail) {
             return TextSpan(
-              text: _text,
+              text: t,
               style: hyperLinkStyle,
               recognizer: TapGestureRecognizer()..onTap = 
-                () => onClicked(_text, HyperLinkType.email),
+                () => onClicked(t, HyperLinkType.email),
             );
-          } else if(_text.isPhone) {
+          } else if(t.isPhone) {
             return TextSpan(
-              text: _text,
+              text: t,
               style: hyperLinkStyle,
               recognizer: TapGestureRecognizer()..onTap = 
-                () => onClicked(_text, HyperLinkType.phone),
+                () => onClicked(t, HyperLinkType.phone),
             );
           } else {
-            return TextSpan(text: _text);
+            return TextSpan(text: t);
           }
         }).toList(),
       ),

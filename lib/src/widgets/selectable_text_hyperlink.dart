@@ -5,11 +5,10 @@ import 'package:dart_dev_utils/dart_dev_utils.dart';
 import 'text_hyperlink.dart' show HyperLinkType;
 
 // Creted by `Suebersson Montalvão` - 08/10/2020
-// Upgraded: 30/01/2023
+// Upgraded: 26/10/2025
 
 /// Criar uma [Widget] usando a Widget `SelectableText.rich`, que detecta `URLs`, `Emails` e `Phones` 
 /// dentro do text selecionável e criar um hyperLink nos endereços encontrados
-@immutable
 class SelectableTextHyperLink extends StatelessWidget {
 
   final String text;
@@ -24,7 +23,7 @@ class SelectableTextHyperLink extends StatelessWidget {
   final bool showCursor, autofocus, enableInteractiveSelection;
   final int? minLines, maxLines;
   final double cursorWidth;
-  final double? textScaleFactor, cursorHeight;
+  final double? cursorHeight;
   final Radius? cursorRadius;
   final Color? cursorColor;
   final DragStartBehavior dragStartBehavior;
@@ -32,9 +31,10 @@ class SelectableTextHyperLink extends StatelessWidget {
   final ScrollPhysics? scrollPhysics;
   final TextHeightBehavior? textHeightBehavior;
   final TextWidthBasis? textWidthBasis;
+  final TextScaler? textScale;
 
   const SelectableTextHyperLink({
-    Key? key,
+    super.key,
     required this.text,
     required this.onClicked,
     this.style,
@@ -46,7 +46,7 @@ class SelectableTextHyperLink extends StatelessWidget {
     this.strutStyle,
     this.textAlign,
     this.textDirection,
-    this.textScaleFactor,
+    this.textScale,
     this.showCursor = false,
     this.autofocus = false,
     this.minLines,
@@ -61,7 +61,7 @@ class SelectableTextHyperLink extends StatelessWidget {
     this.scrollPhysics,
     this.textHeightBehavior,
     this.textWidthBasis,
-  }): super(key: key);
+  });
 
   final String _split = '!##!';
 
@@ -95,30 +95,30 @@ class SelectableTextHyperLink extends StatelessWidget {
       TextSpan(
         // style: style ?? DefaultTextStyle.of(context).style,
         style: style ?? Theme.of(context).textTheme.bodyMedium,
-        children: newText.split(_split).map<InlineSpan>((_text) {
-          if(_text.isNetworkURL) {
+        children: newText.split(_split).map<InlineSpan>((t) {
+          if(t.isNetworkURL) {
             return TextSpan(
-              text: _text,
+              text: t,
               style: hyperLinkStyle,
               recognizer: TapGestureRecognizer()..onTap = 
-                () => onClicked(_text, HyperLinkType.url),
+                () => onClicked(t, HyperLinkType.url),
             );
-          } else if(_text.isEmail) {
+          } else if(t.isEmail) {
             return TextSpan(
-              text: _text,
+              text: t,
               style: hyperLinkStyle,
               recognizer: TapGestureRecognizer()..onTap = 
-                () => onClicked(_text, HyperLinkType.email),
+                () => onClicked(t, HyperLinkType.email),
             );
-          } else if(_text.isPhone) {
+          } else if(t.isPhone) {
             return TextSpan(
-              text: _text,
+              text: t,
               style: hyperLinkStyle,
               recognizer: TapGestureRecognizer()..onTap = 
-                () => onClicked(_text, HyperLinkType.phone),
+                () => onClicked(t, HyperLinkType.phone),
             );
           } else {
-            return TextSpan(text: _text);
+            return TextSpan(text: t);
           }
         }).toList(),
       ),
@@ -127,7 +127,7 @@ class SelectableTextHyperLink extends StatelessWidget {
       strutStyle: strutStyle,
       textAlign: textAlign,
       textDirection: textDirection,
-      textScaleFactor: textScaleFactor,
+      textScaler: textScale ?? const TextScaler.linear(1.0),
       showCursor: showCursor,
       autofocus: autofocus,
       minLines: minLines,
@@ -141,7 +141,6 @@ class SelectableTextHyperLink extends StatelessWidget {
       scrollPhysics: scrollPhysics,
       textHeightBehavior: textHeightBehavior,
       textWidthBasis: textWidthBasis,
-      toolbarOptions: const ToolbarOptions(selectAll: true, copy: true),
       // contextMenuBuilder: (context, editableTextState) {
       // },
       onSelectionChanged: onSelectionChanged,

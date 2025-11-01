@@ -11,15 +11,15 @@ class FlashesLight extends StatefulWidget {
   final Duration transitionTime;
   
   const FlashesLight({
-    Key? key,
+    super.key,
     required this.child,
     required this.beginColor,
     required this.endColor,
     this.transitionTime = const Duration(milliseconds: 1000),
-  }) : super(key: key);
+  });
 
   @override
-  _FlashesLightState createState() => _FlashesLightState();
+  State<FlashesLight> createState() => _FlashesLightState();
 }
 
 class _FlashesLightState extends State<FlashesLight> with SingleTickerProviderStateMixin{

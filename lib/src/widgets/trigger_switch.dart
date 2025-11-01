@@ -36,7 +36,7 @@ class TriggerSwitch extends StatefulWidget {
   final List<BoxShadow>? boxShadowList;
 
   const TriggerSwitch({
-    Key? key,
+    super.key,
     required this.value,
     required this.onChanged,
     this.computeBefore,
@@ -49,10 +49,10 @@ class TriggerSwitch extends StatefulWidget {
     this.reverseCurve = Curves.bounceInOut,
     this.animationTime = const Duration(milliseconds: 450),
     this.boxShadowList,
-  }): super(key: key);
+  });
 
   @override
-  _TriggerSwitchState createState() => _TriggerSwitchState();
+  State<TriggerSwitch> createState() => _TriggerSwitchState();
 }
 
 class _TriggerSwitchState extends State<TriggerSwitch> with SingleTickerProviderStateMixin{

@@ -4,7 +4,6 @@ import '../stateManager/valueStream.dart';
 
 /// TabView de Scaffold customizada semelhante ao widget `CupertinoTabScaffold`
 /// como mais flexibilidade
-@immutable
 class TabScaffold extends StatefulWidget {
   /// TabView para alternar entre páginas que oculpam a tela inteira
   final double labelSize;

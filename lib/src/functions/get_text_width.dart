@@ -1,19 +1,16 @@
 import 'package:flutter/painting.dart';
 
 /// Obter o tamanho do texto
-double getTextWidth(String text, {TextStyle? style, double textScaleFactor = 1.0}){
-    
-  TextPainter painter = TextPainter(
+double getTextWidth(String text, {TextStyle? style, TextScaler? textScale}){
+  final TextPainter painter = TextPainter(
     text: TextSpan(
       text: text,
       style: style
     ),
     maxLines: 1,
-    textScaleFactor: textScaleFactor,
+    textScaler: textScale ?? const TextScaler.linear(1.0),
     textDirection: TextDirection.ltr
   );
-
   painter.layout();
-
   return painter.size.width;
 }

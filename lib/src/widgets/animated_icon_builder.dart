@@ -30,7 +30,7 @@ class AnimatedIconBuilder extends StatefulWidget {
   final ButtonStyle?  style;
 
   const AnimatedIconBuilder({
-    Key? key, 
+    super.key, 
     required this.icon, 
     required this.trasitionIcon, 
     required this.onPressed,
@@ -58,10 +58,11 @@ class AnimatedIconBuilder extends StatefulWidget {
     this.isSelected,
     this.constraints,
     this.style,
-    }) : super(key: key);
+    });
 
   @override
-  _AnimatedIconBuilderState createState() => _AnimatedIconBuilderState();
+  State<AnimatedIconBuilder> createState() => _AnimatedIconBuilderState();
+
 }
 
 class _AnimatedIconBuilderState extends State<AnimatedIconBuilder> with SingleTickerProviderStateMixin {
@@ -120,7 +121,7 @@ class _AnimatedIconBuilderState extends State<AnimatedIconBuilder> with SingleTi
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
     return IconButton(
       tooltip: widget.tooltip,
       iconSize: widget.iconSize ?? theme.iconTheme.size,

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class StatusBarSpacer extends StatelessWidget {
   const StatusBarSpacer({
-    Key? key,
+    super.key,
     this.color,
-  }) : super(key: key);
+  });
   final Color? color;
   @override
   Widget build(BuildContext context) {

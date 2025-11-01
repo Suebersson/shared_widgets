@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 
 Future<String?> getAppVersion() async{
 
-  File file = File('.${Platform.pathSeparator}pubspec.yaml');
+  final File file = File('.${Platform.pathSeparator}pubspec.yaml');
   
   String body = '';
 
@@ -62,10 +62,10 @@ Future<String?> getAppVersion() async{
 
 String? getVersionOnBodyPubSpecYaml(String body){
 
-  RegExp regExpForGetAppVersion = 
+  final RegExp regExpForGetAppVersion = 
     RegExp(r'(version:\s.*\+\d{1})|(version:\s\w.*\d{1})|(version:\s\d{1}\.\d{1}\.\d{1})');
 
-  RegExp regExpForComments = RegExp(r'(#\s.*)|(#.*)');
+  final RegExp regExpForComments = RegExp(r'(#\s.*)|(#.*)');
 
   // Remover os comentários  
   if(regExpForComments.hasMatch(body)){

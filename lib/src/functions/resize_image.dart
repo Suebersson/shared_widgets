@@ -28,14 +28,14 @@ Future<Uint8List> resizeImage({
 
   try {
 
-    Codec codec = await instantiateImageCodec(
+    final Codec codec = await instantiateImageCodec(
       bytes, 
       targetHeight: height, 
       targetWidth: width,
       allowUpscaling: allowUpscaling
     );
 
-    FrameInfo frameInfo = await codec.getNextFrame();
+    final FrameInfo frameInfo = await codec.getNextFrame();
     
 
     printLog(

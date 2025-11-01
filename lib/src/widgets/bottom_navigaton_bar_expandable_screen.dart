@@ -3,7 +3,6 @@ import '../functions/get_text_width.dart';
 import './boolean_builder.dart';
 
 /// Barra de navigação inferior com botões expansível para páginas/screen
-@immutable
 class BottomNavigatonBarExpandableScreen extends StatefulWidget {
 
   final TextStyle? labelStyle;
@@ -30,7 +29,7 @@ class BottomNavigatonBarExpandableScreen extends StatefulWidget {
   // final Curve animationCurve;
 
   const BottomNavigatonBarExpandableScreen({
-    Key? key,
+    super.key,
     required this.listExpandableTag,
     this.labelStyle,
     this.iconThemeData,
@@ -47,10 +46,9 @@ class BottomNavigatonBarExpandableScreen extends StatefulWidget {
     // this.animationTime = const Duration(milliseconds: 300),
     // this.animationCurve = Curves.easeInCirc,
   }): assert(
-        initialPage < listExpandableTag.length, 
-        'O index da página $initialPage não existe'
-      ),
-      super(key: key);
+      initialPage < listExpandableTag.length, 
+      'O index da página $initialPage não existe'
+    );
 
   /// Lista de funções para exibir e ocultar a buttomBar
   static final List<Function> _buttomBarVisibilityList = [];
@@ -63,7 +61,7 @@ class BottomNavigatonBarExpandableScreen extends StatefulWidget {
   }
 
   @override
-  _BottomNavigatonBarExpandableScreenState createState() => _BottomNavigatonBarExpandableScreenState();
+  State<BottomNavigatonBarExpandableScreen> createState() => _BottomNavigatonBarExpandableScreenState();
 
 }
 
@@ -115,9 +113,9 @@ class _BottomNavigatonBarExpandableScreenState extends State<BottomNavigatonBarE
     final double partOfButtomWidth = (MediaQuery.sizeOf(context).width / widget.listExpandableTag.length) * 0.49;
     double iconButtomWidth;
 
-    if(partOfButtomWidth <= 42) {
+    if (partOfButtomWidth <= 42) {
       iconButtomWidth = (iconThemeData.size ?? 24) + 42;
-    }else{
+    } else {
       iconButtomWidth = (iconThemeData.size ?? 24) + partOfButtomWidth;
     }
 
@@ -171,7 +169,7 @@ class _BottomNavigatonBarExpandableScreenState extends State<BottomNavigatonBarE
                               widget.selectedButtonBorderRadius ?? widget.backgroundHeight),
                             child: ValueListenableBuilder<int>(
                               valueListenable: _currentPage,
-                              builder: (_, i, __) {
+                              builder: (_, int i, _) {
                                 return AnimatedContainer(
                                   alignment: Alignment.center,
                                   duration: const Duration(milliseconds: 300), //widget.animationTime,
@@ -255,27 +253,27 @@ class _BottomNavigatonBarExpandableScreenState extends State<BottomNavigatonBarE
 }
 
 /// Criar um botão expansível passando uma `IconData`, `text` e uma `Widget`
-@immutable
 class CreateButtomExpandable {
   
   final String label;
   final IconData icon;
   
-  /// Para que page[Widget] não seja disposada automaticamente quando ir para
-  /// outra página, é necessario que a [page] seja uma [StatefulWidget] e também 
-  /// hede de [AutomaticKeepAliveClientMixin]
-  /// 
-  /// Ex: class _AnyPageState extends State<AnyPage> with AutomaticKeepAliveClientMixin {
-  ///   
-  ///   @override
-  ///   Widget build(BuildContext context) {}
-  /// 
-  ///   // true => não disposar essa página
-  ///   @override
-  ///   bool get wantKeepAlive => true;
-  /// 
-  /// }
-  /// 
+/*
+  Para que page[Widget] não seja disposada automaticamente quando ir para
+  outra página, é necessario que a [page] seja uma [StatefulWidget] e também 
+  hede de [AutomaticKeepAliveClientMixin]
+  
+  Ex: class _AnyPageState extends State<AnyPage> with AutomaticKeepAliveClientMixin {
+    
+    @override
+    Widget build(BuildContext context) {}
+  
+    // true => não disposar essa página
+    @override
+    bool get wantKeepAlive => true;
+  
+  }
+*/
   final Widget page;
   
   const CreateButtomExpandable({

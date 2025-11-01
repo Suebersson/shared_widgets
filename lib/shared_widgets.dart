@@ -1,4 +1,4 @@
-library shared_widgets;
+library;
 
 /// [Widgets]
 export './src/widgets/animated_icon_builder.dart';
