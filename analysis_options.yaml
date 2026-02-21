@@ -68,6 +68,9 @@ linter:
     # ignorar underline duplo em variáveis não usadas
     unnecessary_underscores: false
 
+    # não simplificar as variáveis nomeadas
+    simplify_variable_pattern: false
+
     # Não analizar o uso da lib 'dart:html'
     # avoid_web_libraries_in_flutter: false
     
